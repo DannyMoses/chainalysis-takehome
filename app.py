@@ -9,15 +9,12 @@ app = Flask(__name__)
 # returns:
 # { symbol : str, price_24h : float, volume_24_h : float, last_trade_price : float }
 def getFromBlockchain(symbol):
-    r = requests.get('https://api.blockchain.com/v3/exchange/tickers/' + symbol)
-    return r.json()
+    r = requests.get(config["blockchain"][1] + symbol)
+    return r.json()[config["blockchain"][2]]
 
 def getFromGemini(symbol):
-    r = requests.get('https://api.gemini.com/v1/pubticker/' + symbol)
-    return r.json()
-
-
-exchanges = { "blockchain.com" : ["BTC-USD", "ETH-USD"], "gemini.com" : ["btcusd", "ethusd"] }
+    r = requests.get(config["gemini"][1]  + symbol)
+    return r.json()[config["gemini"][2]]
 
 @app.route('/exchanges', methods=['GET'])
 def getExhanges():
@@ -31,4 +28,6 @@ def getTicker():
    print(exchange, currency)
    return 200
 
-
+@app.route("/update", methods=["GET"])
+def update():
+    return {"blockchain" : float(getFromBlockchain("BTC-USD")), "gemini" : float(getFromGemini("btcusd"))}
