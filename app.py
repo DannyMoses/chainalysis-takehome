@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import requests
 
 from config import config
@@ -15,6 +15,10 @@ def getFromBlockchain(symbol):
 def getFromGemini(symbol):
     r = requests.get(config["gemini"][1]  + symbol)
     return r.json()[config["gemini"][2]]
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/exchanges', methods=['GET'])
 def getExhanges():
