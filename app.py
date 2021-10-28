@@ -32,6 +32,9 @@ def getTicker():
    print(exchange, currency)
    return 200
 
-@app.route("/update", methods=["GET"])
-def update():
-    return {"blockchain" : float(getFromBlockchain("BTC-USD")), "gemini" : float(getFromGemini("btcusd"))}
+@app.route("/update/<crypto>", methods=["GET"])
+def update(crypto="BTC"):
+    if (crypto == "BTC"):
+        return {"blockchain" : float(getFromBlockchain("BTC-USD")), "gemini" : float(getFromGemini("btcusd"))}
+    elif (crypto == "ETH"):
+        return {"blockchain" : float(getFromBlockchain("ETH-USD")), "gemini" : float(getFromGemini("ethusd"))}
