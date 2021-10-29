@@ -16,17 +16,20 @@ $(document).ready( function()  {
 			console.log(data);
 			///$("#Blockchain").text("$" + data["blockchain"]);
 			///$("#Gemini").text("$" + data["gemini"]);
-			if (data["Blockchain"] <= data["Gemini"]) {
-				$("#recommendation").text("Recommened buy site: " + "Blockchain");
-			} else {
-				$("#recommendation").text("Recommened buy site: " + "Gemini");
-			}
+			///if (data["Blockchain"] <= data["Gemini"]) {
+			///	$("#recommendation").text("Recommened buy site: " + "Blockchain");
+			///} else {
+			///	$("#recommendation").text("Recommened buy site: " + "Gemini");
+			///}
 
 			$.each(data, function(k,v) {
 				var item = "#"+k;
 				console.log(item);
 				$(item).text("$" + v);
 			});
+
+			var min = _.min(Object.keys(data), function(o) { return data[o] });
+			$("#recommendation").text("Recommended buy site: " + min);
 		});
 	}, 1000);
 

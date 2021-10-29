@@ -1,3 +1,3 @@
 #! /bin/bash
 
-flask run --port=3000 
+python3 app.py

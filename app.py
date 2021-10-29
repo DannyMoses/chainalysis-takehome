@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import requests
+import threading
+import time
 
 from config import config
 
@@ -16,6 +18,19 @@ def getFromGemini(symbol):
 def getPrice(exchange, symbol="BTC", fiat="USD"):
     r = requests.get(config[exchange][1] + config[exchange][-1](symbol, fiat))
     return r.json()[config[exchange][2]]
+
+workerLock = threading.Lock()
+prices = {}
+def workerThread():
+    while True:
+        print("waiting for lock")
+        workerLock.acquire()
+        for coin in config["CRYPTOS"]:
+            for exchange in config["EXCHANGES"]:
+                prices[exchange[0]][coin[0]] = getPrice(exchange[0], coin[0])
+        print("whee thread!")
+        workerLock.release()
+        time.sleep(config["INTERVAL"])
 
 @app.route('/')
 def home():
@@ -35,8 +50,19 @@ def getTicker():
 
 @app.route("/update/<crypto>", methods=["GET"])
 def update(crypto="BTC"):
-    # return {"Blockchain" : float(getFromBlockchain(crypto)), "Gemini" : float(getFromGemini(crypto))}
     ret = {}
+    #for e in config["EXCHANGES"]:
+    #    ret[e[0]] = getPrice(e[0], crypto)
+    workerLock.acquire()
     for e in config["EXCHANGES"]:
-        ret[e[0]] = getPrice(e[0], crypto)
+        ret[e[0]] = prices[e[0]][crypto]
+    workerLock.release()
     return ret
+
+if __name__ == "__main__":
+    for exchange in config["EXCHANGES"]:
+        prices[exchange[0]] = {crypto[0] : 0.0 for crypto in config["CRYPTOS"]}
+    print(prices)
+    worker = threading.Thread(target=workerThread, name="price-updater", daemon=True)
+    worker.start()
+    app.run(debug=True, use_reloader=False, port=3000)
