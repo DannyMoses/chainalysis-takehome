@@ -36,6 +36,7 @@
 						{% for exchange in exchanges %}
 						<li class="list-group-item text-white bg-secondary"><a  href={{"https://www." + exchange[1]}}>{{exchange[0]}}</a><div class="priceData" id={{exchange[0]}}></div></li>
 						{% endfor %}
+						<div id="chartContainer"></div>
 						<li class="list-group-item text-white bg-secondary"><div id="recommendation"></div></li>
 					</ul>
 				</div>

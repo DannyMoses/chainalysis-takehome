@@ -10,21 +10,10 @@ $(document).ready( function()  {
 		selectedCrypto = $(this).parents(".dropdown").find('.btn').val();
 	});
 
-	
 	setInterval(function() {
 		$.get('/update/' + selectedCrypto, function(data, status){
-			console.log(data);
-			///$("#Blockchain").text("$" + data["blockchain"]);
-			///$("#Gemini").text("$" + data["gemini"]);
-			///if (data["Blockchain"] <= data["Gemini"]) {
-			///	$("#recommendation").text("Recommened buy site: " + "Blockchain");
-			///} else {
-			///	$("#recommendation").text("Recommened buy site: " + "Gemini");
-			///}
-
 			$.each(data, function(k,v) {
 				var item = "#"+k;
-				console.log(item);
 				$(item).text("$" + v);
 			});
 

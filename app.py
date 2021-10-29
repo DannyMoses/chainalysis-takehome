@@ -23,12 +23,10 @@ workerLock = threading.Lock()
 prices = {}
 def workerThread():
     while True:
-        print("waiting for lock")
         workerLock.acquire()
         for coin in config["CRYPTOS"]:
             for exchange in config["EXCHANGES"]:
-                prices[exchange[0]][coin[0]] = getPrice(exchange[0], coin[0])
-        print("whee thread!")
+                prices[exchange[0]][coin[0]] = float(getPrice(exchange[0], coin[0]))
         workerLock.release()
         time.sleep(config["INTERVAL"])
 
