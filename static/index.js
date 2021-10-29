@@ -14,13 +14,19 @@ $(document).ready( function()  {
 	setInterval(function() {
 		$.get('/update/' + selectedCrypto, function(data, status){
 			console.log(data);
-			$("#blockchainData").text("$" + data["blockchain"]);
-			$("#geminiData").text("$" + data["gemini"]);
-			if (data["blockchain"] <= data["gemini"]) {
+			///$("#Blockchain").text("$" + data["blockchain"]);
+			///$("#Gemini").text("$" + data["gemini"]);
+			if (data["Blockchain"] <= data["Gemini"]) {
 				$("#recommendation").text("Recommened buy site: " + "Blockchain");
 			} else {
 				$("#recommendation").text("Recommened buy site: " + "Gemini");
 			}
+
+			$.each(data, function(k,v) {
+				var item = "#"+k;
+				console.log(item);
+				$(item).text("$" + v);
+			});
 		});
 	}, 1000);
 

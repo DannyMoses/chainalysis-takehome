@@ -26,13 +26,15 @@
 							Crypto Selection
 						</button>
 						<ul class="dropdown-menu" aria-islabelledby="dropdownMenuButton">
-							<li><a class="dropdown-item" href="#" data-value="BTC">Bitcoin</a></li>
-							<li><a class="dropdown-item" href="#" data-value="ETH">Ethereum</a></li>
+							{% for coin in cryptos %}
+							<li><a class="dropdown-item" href="#" data-value={{coin[0]}}>{{coin[1]}}</a></li>
+							{% endfor %}
 						</ul>
 					</div>
 					<ul class="list-group list-group-flush bg-dark justify-content-md-center">
-						<li class="list-group-item text-white bg-secondary"><a href="https://www.blockchain.com/">Blockchain.com</a><div id="blockchainData"></div></li>
-						<li class="list-group-item text-white bg-secondary"><a href="https://www.gemini.com/">Gemini.com</a><div id="geminiData"></div></li>
+						{% for exchange in exchanges %}
+						<li class="list-group-item text-white bg-secondary"><a  href={{"https://www." + exchange[1]}}>{{exchange[0]}}</a><div class="priceData" id={{exchange[0]}}></div></li>
+						{% endfor %}
 						<li class="list-group-item text-white bg-secondary"><div id="recommendation"></div></li>
 					</ul>
 				</div>

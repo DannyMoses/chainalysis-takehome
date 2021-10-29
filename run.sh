@@ -1,3 +1,3 @@
 #! /bin/bash
 
-sudo flask run --host=0.0.0.0 --port=3000 
+flask run --port=3000 
