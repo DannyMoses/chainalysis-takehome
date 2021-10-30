@@ -66,3 +66,5 @@ def update(crypto="BTC"):
     workerLock.release()
     return ret
 
+if __name__ == "__main__":
+    app.run(port=config["PORT"])

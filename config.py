@@ -1,4 +1,5 @@
 config = {
+    "PORT" : 3000,
     "EXCHANGES" : [("Blockchain", "blockchain.com"), ("Gemini", "gemini.com")],
     "site" : 0,
     "api" : 1,
