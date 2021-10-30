@@ -14,10 +14,15 @@ $(document).ready( function()  {
 		$.get('/update/' + selectedCrypto, function(data, status){
 			$.each(data, function(k,v) {
 				var item = "#"+k;
-				$(item).text("$" + v);
+				if (parseFloat(v) < 0) {
+					$(item).text("Error with this site's API");
+				} else {
+					$(item).text("$" + v);
+				}
 			});
 
-			var min = _.min(Object.keys(data), function(o) { return data[o] });
+			var min = _.min(Object.keys(data), function(o) { return parseFloat(data[o]) });
+			console.log(data);
 			$("#recommendation").text("Recommended buy site: " + min);
 		});
 	}, 1000);

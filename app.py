@@ -15,7 +15,10 @@ def getFromGemini(symbol):
 
 def getPrice(exchange, symbol="BTC", fiat="USD"):
     r = requests.get(config[exchange][1] + config[exchange][-1](symbol, fiat))
-    return r.json()[config[exchange][2]]
+    if config[exchange][3] in r.json():
+        return -1.0
+    else:
+        return r.json()[config[exchange][2]]
 
 workerLock = threading.Lock()
 prices = {}
