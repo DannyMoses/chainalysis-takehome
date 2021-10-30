@@ -10,4 +10,4 @@ Environment="PATH=/home/dmoses/.local/bin"
 ExecStart=/home/dmoses/.local/bin/gunicorn --workers 5 --bind 127.0.0.1:3000 wsgi:app
 
 [Install]
-WantedBy=multi-user-target
+WantedBy=multi-user.target
