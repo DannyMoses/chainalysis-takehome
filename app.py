@@ -5,8 +5,6 @@ import time
 
 from config import config
 
-app = Flask(__name__)
-
 def getFromBlockchain(symbol):
     r = requests.get(config["blockchain"][1] + config["blockchain"][-1](symbol, "usd"))
     return r.json()[config["blockchain"][2]]
@@ -29,6 +27,17 @@ def workerThread():
                 prices[exchange[0]][coin[0]] = float(getPrice(exchange[0], coin[0]))
         workerLock.release()
         time.sleep(config["INTERVAL"])
+
+def create_app():
+    app = Flask(__name__)
+    for exchange in config["EXCHANGES"]:
+        prices[exchange[0]] = {crypto[0] : 0.0 for crypto in config["CRYPTOS"]}
+    worker = threading.Thread(target=workerThread, name="price-updater", daemon=True)
+    worker.start()
+
+    return app
+
+app = create_app()
 
 @app.route('/')
 def home():
@@ -57,10 +66,3 @@ def update(crypto="BTC"):
     workerLock.release()
     return ret
 
-if __name__ == "__main__":
-    for exchange in config["EXCHANGES"]:
-        prices[exchange[0]] = {crypto[0] : 0.0 for crypto in config["CRYPTOS"]}
-    print(prices)
-    worker = threading.Thread(target=workerThread, name="price-updater", daemon=True)
-    worker.start()
-    app.run(debug=True, use_reloader=False, port=3000)
